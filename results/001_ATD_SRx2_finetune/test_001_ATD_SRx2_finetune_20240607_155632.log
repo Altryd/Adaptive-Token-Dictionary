@@ -1,0 +1,266 @@
+2024-06-07 15:56:32,568 INFO: 
+                ____                _       _____  ____
+               / __ ) ____ _ _____ (_)_____/ ___/ / __ \
+              / __  |/ __ `// ___// // ___/\__ \ / /_/ /
+             / /_/ // /_/ /(__  )/ // /__ ___/ // _, _/
+            /_____/ \__,_//____//_/ \___//____//_/ |_|
+     ______                   __   __                 __      __
+    / ____/____   ____   ____/ /  / /   __  __ _____ / /__   / /
+   / / __ / __ \ / __ \ / __  /  / /   / / / // ___// //_/  / /
+  / /_/ // /_/ // /_/ // /_/ /  / /___/ /_/ // /__ / /<    /_/
+  \____/ \____/ \____/ \____/  /_____/\____/ \___//_/|_|  (_)
+    
+Version Information: 
+	BasicSR: 1.4.2
+	PyTorch: 2.0.1+cu117
+	TorchVision: 0.15.2+cu117
+2024-06-07 15:56:32,569 INFO: 
+  name: 001_ATD_SRx2_finetune
+  model_type: ATDModel
+  scale: 2
+  num_gpu: 1
+  manual_seed: 0
+  datasets:[
+    test_1:[
+      name: Set5
+      type: PairedImageDataset
+      dataroot_gt: datasets/TestDataSR/HR/Set5/x2
+      dataroot_lq: datasets/TestDataSR/LR/LRBI/Set5/x2
+      io_backend:[
+        type: disk
+      ]
+      phase: test
+      scale: 2
+    ]
+    test_2:[
+      name: Set14
+      type: PairedImageDataset
+      dataroot_gt: datasets/TestDataSR/HR/Set14/x2
+      dataroot_lq: datasets/TestDataSR/LR/LRBI/Set14/x2
+      io_backend:[
+        type: disk
+      ]
+      phase: test
+      scale: 2
+    ]
+    test_3:[
+      name: BSD100
+      type: PairedImageDataset
+      dataroot_gt: datasets/TestDataSR/HR/B100/x2
+      dataroot_lq: datasets/TestDataSR/LR/LRBI/B100/x2
+      io_backend:[
+        type: disk
+      ]
+      phase: test
+      scale: 2
+    ]
+    test_4:[
+      name: Urban100
+      type: PairedImageDataset
+      dataroot_gt: datasets/TestDataSR/HR/Urban100/x2
+      dataroot_lq: datasets/TestDataSR/LR/LRBI/Urban100/x2
+      io_backend:[
+        type: disk
+      ]
+      phase: test
+      scale: 2
+    ]
+    test_5:[
+      name: Manga109
+      type: PairedImageDataset
+      dataroot_gt: datasets/TestDataSR/HR/Manga109/x2
+      dataroot_lq: datasets/TestDataSR/LR/LRBI/Manga109/x2
+      io_backend:[
+        type: disk
+      ]
+      phase: test
+      scale: 2
+    ]
+  ]
+  network_g:[
+    type: ATD
+    upscale: 2
+    in_chans: 3
+    img_size: 64
+    embed_dim: 210
+    depths: [6, 6, 6, 6, 6, 6]
+    num_heads: [6, 6, 6, 6, 6, 6]
+    window_size: 16
+    category_size: 256
+    num_tokens: 128
+    reducted_dim: 20
+    convffn_kernel_size: 5
+    img_range: 1.0
+    mlp_ratio: 2
+    upsampler: pixelshuffle
+    resi_connection: 1conv
+    use_checkpoint: False
+  ]
+  path:[
+    pretrain_network_g: experiments/pretrained_models/001_ATD_SRx2_finetune.pth
+    strict_load_g: True
+    param_key_g: params_ema
+    results_root: /home/user/projects_sr/Adaptive-Token-Dictionary/results/001_ATD_SRx2_finetune
+    log: /home/user/projects_sr/Adaptive-Token-Dictionary/results/001_ATD_SRx2_finetune
+    visualization: /home/user/projects_sr/Adaptive-Token-Dictionary/results/001_ATD_SRx2_finetune/visualization
+  ]
+  val:[
+    save_img: True
+    suffix: None
+    metrics:[
+      psnr:[
+        type: calculate_psnr
+        crop_border: 2
+        test_y_channel: True
+      ]
+      ssim:[
+        type: calculate_ssim
+        crop_border: 2
+        test_y_channel: True
+      ]
+    ]
+  ]
+  dist: False
+  rank: 0
+  world_size: 1
+  auto_resume: False
+  is_train: False
+
+2024-06-07 15:56:32,638 INFO: Dataset [PairedImageDataset] - Set5 is built.
+2024-06-07 15:56:32,639 INFO: Number of test images in Set5: 5
+2024-06-07 15:56:32,656 INFO: Dataset [PairedImageDataset] - Set14 is built.
+2024-06-07 15:56:32,656 INFO: Number of test images in Set14: 14
+2024-06-07 15:56:32,678 INFO: Dataset [PairedImageDataset] - BSD100 is built.
+2024-06-07 15:56:32,678 INFO: Number of test images in BSD100: 100
+2024-06-07 15:56:32,714 INFO: Dataset [PairedImageDataset] - Urban100 is built.
+2024-06-07 15:56:32,714 INFO: Number of test images in Urban100: 100
+2024-06-07 15:56:32,729 INFO: Dataset [PairedImageDataset] - Manga109 is built.
+2024-06-07 15:56:32,729 INFO: Number of test images in Manga109: 109
+2024-06-07 15:56:33,364 INFO: Network [ATD] is created.
+2024-06-07 15:56:42,064 INFO: Network: ATD, with parameters: 20,113,217
+2024-06-07 15:56:42,064 INFO: ATD(
+  (conv_first): Conv2d(3, 210, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+  (patch_embed): PatchEmbed(
+    (norm): LayerNorm((210,), eps=1e-05, elementwise_affine=True)
+  )
+  (patch_unembed): PatchUnEmbed()
+  (layers): ModuleList(
+    (0-5): 6 x ATDB(
+      (patch_embed): PatchEmbed()
+      (patch_unembed): PatchUnEmbed()
+      (residual_group): BasicBlock(
+        dim=210, input_resolution=(64, 64), depth=6
+        (layers): ModuleList(
+          (0-4): 5 x ATDTransformerLayer(
+            (softmax): Softmax(dim=-1)
+            (lrelu): LeakyReLU(negative_slope=0.01)
+            (sigmoid): Sigmoid()
+            (norm1): LayerNorm((210,), eps=1e-05, elementwise_affine=True)
+            (norm2): LayerNorm((210,), eps=1e-05, elementwise_affine=True)
+            (norm3): InstanceNorm1d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=False)
+            (wqkv): Linear(in_features=210, out_features=630, bias=True)
+            (attn_win): WindowAttention(
+              dim=210, window_size=(16, 16), num_heads=6, qkv_bias=True
+              (proj): Linear(in_features=210, out_features=210, bias=True)
+              (softmax): Softmax(dim=-1)
+            )
+            (attn_atd): ATD_CA(
+              (wq): Linear(in_features=210, out_features=20, bias=True)
+              (wk): Linear(in_features=210, out_features=20, bias=True)
+              (wv): Linear(in_features=210, out_features=210, bias=True)
+              (softmax): Softmax(dim=-1)
+            )
+            (attn_aca): AC_MSA(
+              (proj): Linear(in_features=210, out_features=210, bias=True)
+              (softmax): Softmax(dim=-1)
+            )
+            (convffn): ConvFFN(
+              (fc1): Linear(in_features=210, out_features=420, bias=True)
+              (act): GELU(approximate='none')
+              (dwconv): dwconv(
+                (depthwise_conv): Sequential(
+                  (0): Conv2d(420, 420, kernel_size=(5, 5), stride=(1, 1), padding=(2, 2), groups=420)
+                  (1): GELU(approximate='none')
+                )
+              )
+              (fc2): Linear(in_features=420, out_features=210, bias=True)
+            )
+          )
+          (5): ATDTransformerLayer(
+            (softmax): Softmax(dim=-1)
+            (lrelu): LeakyReLU(negative_slope=0.01)
+            (sigmoid): Sigmoid()
+            (norm1): LayerNorm((210,), eps=1e-05, elementwise_affine=True)
+            (norm2): LayerNorm((210,), eps=1e-05, elementwise_affine=True)
+            (wqkv): Linear(in_features=210, out_features=630, bias=True)
+            (attn_win): WindowAttention(
+              dim=210, window_size=(16, 16), num_heads=6, qkv_bias=True
+              (proj): Linear(in_features=210, out_features=210, bias=True)
+              (softmax): Softmax(dim=-1)
+            )
+            (attn_atd): ATD_CA(
+              (wq): Linear(in_features=210, out_features=20, bias=True)
+              (wk): Linear(in_features=210, out_features=20, bias=True)
+              (wv): Linear(in_features=210, out_features=210, bias=True)
+              (softmax): Softmax(dim=-1)
+            )
+            (attn_aca): AC_MSA(
+              (proj): Linear(in_features=210, out_features=210, bias=True)
+              (softmax): Softmax(dim=-1)
+            )
+            (convffn): ConvFFN(
+              (fc1): Linear(in_features=210, out_features=420, bias=True)
+              (act): GELU(approximate='none')
+              (dwconv): dwconv(
+                (depthwise_conv): Sequential(
+                  (0): Conv2d(420, 420, kernel_size=(5, 5), stride=(1, 1), padding=(2, 2), groups=420)
+                  (1): GELU(approximate='none')
+                )
+              )
+              (fc2): Linear(in_features=420, out_features=210, bias=True)
+            )
+          )
+        )
+      )
+      (conv): Conv2d(210, 210, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    )
+  )
+  (norm): LayerNorm((210,), eps=1e-05, elementwise_affine=True)
+  (conv_after_body): Conv2d(210, 210, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+  (conv_before_upsample): Sequential(
+    (0): Conv2d(210, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    (1): LeakyReLU(negative_slope=0.01, inplace=True)
+  )
+  (upsample): Upsample(
+    (0): Conv2d(64, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    (1): PixelShuffle(upscale_factor=2)
+  )
+  (conv_last): Conv2d(64, 3, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+)
+2024-06-07 15:56:44,952 INFO: Loading ATD model from experiments/pretrained_models/001_ATD_SRx2_finetune.pth, with param key: [params_ema].
+2024-06-07 15:56:45,097 INFO: Model [ATDModel] is created.
+2024-06-07 15:56:45,097 INFO: Testing Set5...
+2024-06-07 15:57:04,170 INFO: Validation Set5
+	 # psnr: 38.6115	Best: 38.6115 @ 001_ATD_SRx2_finetune iter
+	 # ssim: 0.9629	Best: 0.9629 @ 001_ATD_SRx2_finetune iter
+
+2024-06-07 15:57:04,175 INFO: Testing Set14...
+2024-06-07 15:57:26,768 INFO: Validation Set14
+	 # psnr: 34.9229	Best: 34.9229 @ 001_ATD_SRx2_finetune iter
+	 # ssim: 0.9274	Best: 0.9274 @ 001_ATD_SRx2_finetune iter
+
+2024-06-07 15:57:26,768 INFO: Testing BSD100...
+2024-06-07 15:58:48,187 INFO: Validation BSD100
+	 # psnr: 32.6409	Best: 32.6409 @ 001_ATD_SRx2_finetune iter
+	 # ssim: 0.9054	Best: 0.9054 @ 001_ATD_SRx2_finetune iter
+
+2024-06-07 15:58:48,187 INFO: Testing Urban100...
+2024-06-07 16:08:09,855 INFO: Validation Urban100
+	 # psnr: 34.7314	Best: 34.7314 @ 001_ATD_SRx2_finetune iter
+	 # ssim: 0.9476	Best: 0.9476 @ 001_ATD_SRx2_finetune iter
+
+2024-06-07 16:08:09,856 INFO: Testing Manga109...
+2024-06-07 16:20:31,562 INFO: Validation Manga109
+	 # psnr: 40.3491	Best: 40.3491 @ 001_ATD_SRx2_finetune iter
+	 # ssim: 0.9810	Best: 0.9810 @ 001_ATD_SRx2_finetune iter
+

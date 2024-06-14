@@ -1,0 +1,71 @@
+2024-06-09 14:42:22,019 INFO: 
+                ____                _       _____  ____
+               / __ ) ____ _ _____ (_)_____/ ___/ / __ \
+              / __  |/ __ `// ___// // ___/\__ \ / /_/ /
+             / /_/ // /_/ /(__  )/ // /__ ___/ // _, _/
+            /_____/ \__,_//____//_/ \___//____//_/ |_|
+     ______                   __   __                 __      __
+    / ____/____   ____   ____/ /  / /   __  __ _____ / /__   / /
+   / / __ / __ \ / __ \ / __  /  / /   / / / // ___// //_/  / /
+  / /_/ // /_/ // /_/ // /_/ /  / /___/ /_/ // /__ / /<    /_/
+  \____/ \____/ \____/ \____/  /_____/\____/ \___//_/|_|  (_)
+    
+Version Information: 
+	BasicSR: 1.4.2
+	PyTorch: 2.0.1+cu117
+	TorchVision: 0.15.2+cu117
+2024-06-09 14:42:22,019 INFO: 
+  name: 003_office_ATD_x4_finetune
+  model_type: ATDModel
+  scale: 4
+  num_gpu: 1
+  manual_seed: 0
+  datasets:[
+    test_1:[
+      name: office
+      type: SingleImageDataset
+      dataroot_lq: datasets/office/for_X4
+      io_backend:[
+        type: disk
+      ]
+      phase: test
+      scale: 4
+    ]
+  ]
+  network_g:[
+    type: ATD
+    upscale: 4
+    in_chans: 3
+    img_size: 64
+    embed_dim: 210
+    depths: [6, 6, 6, 6, 6, 6]
+    num_heads: [6, 6, 6, 6, 6, 6]
+    window_size: 16
+    category_size: 256
+    num_tokens: 128
+    reducted_dim: 20
+    convffn_kernel_size: 5
+    img_range: 1.0
+    mlp_ratio: 2
+    upsampler: pixelshuffle
+    resi_connection: 1conv
+    use_checkpoint: False
+  ]
+  path:[
+    pretrain_network_g: experiments/pretrained_models/003_ATD_SRx4_finetune.pth
+    strict_load_g: True
+    param_key_g: params_ema
+    results_root: /home/user/projects_sr/Adaptive-Token-Dictionary/results/003_office_ATD_x4_finetune
+    log: /home/user/projects_sr/Adaptive-Token-Dictionary/results/003_office_ATD_x4_finetune
+    visualization: /home/user/projects_sr/Adaptive-Token-Dictionary/results/003_office_ATD_x4_finetune/visualization
+  ]
+  val:[
+    save_img: True
+    suffix: None
+  ]
+  dist: False
+  rank: 0
+  world_size: 1
+  auto_resume: False
+  is_train: False
+
