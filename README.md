@@ -14,8 +14,9 @@ pip install six
 python setup.py develop - обязательно использовать каждый раз при смене окружения
 ```
 После этого:
-Скачать тестировочный датасет https://drive.google.com/file/d/1_FvS_bnSZvJWx9q4fNZTR8aS15Rb0Kc6/view?usp=sharing (если необходимо тестирование/обучение) и поместить в ./datasets
-Скачать модели отсюда https://drive.google.com/drive/folders/1D3BvTS1xBcaU1mp50k3pBzUWb7qjRvmB?usp=sharing и поместить их в ./experiments/pretrained_models
+
+- Скачать тестировочный датасет https://drive.google.com/file/d/1_FvS_bnSZvJWx9q4fNZTR8aS15Rb0Kc6/view?usp=sharing (если необходимо тестирование/обучение) и поместить в ./datasets
+- Скачать модели отсюда https://drive.google.com/drive/folders/1D3BvTS1xBcaU1mp50k3pBzUWb7qjRvmB?usp=sharing и поместить их в ./experiments/pretrained_models
 
 
 ## Запуск на своих изображениях
